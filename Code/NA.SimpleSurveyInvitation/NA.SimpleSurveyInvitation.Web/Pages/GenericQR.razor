@@ -1,0 +1,89 @@
+﻿@page "/genericQR"
+
+@using NA.SimpleSurveyInvitation.Web.Data
+@using NA.SimpleSurveyInvitation.Web.Models
+@inject QRService QRImageService
+
+
+@inject ExampleService MyService
+
+<h3>Generic QR</h3>
+
+
+@if (gitHubBranches == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>hola</p>
+    @gitHubBranches.Count();
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in gitHubBranches)
+            {
+                <tr>
+                    <td>@forecast.?Name</td>
+                    <td>@forecast.?Commit.?Sha</td>
+                    <td>@forecast.?Commit.?Url</td>
+                    <td>@forecast.?Protected</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@*<img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(qRImage))" />
+
+    <p>@result</p>*@
+
+@code {
+    //private byte[] qRImage;
+    //private string result;
+
+    private List<GitHubBranch> gitHubBranches = new List<GitHubBranch>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //var name = "Luis";
+
+        //qRImage = await QRImageService.GetQRAsync("Hola");
+        //<img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model))" />
+
+        //var url = $"https://localhost:44308/api/QR/Grittings/{name}";
+
+        //var response = await Http.GetStringAsync(url);
+
+        //var result = QRImageService.InternalGreattings("Luis Fer");
+
+        //await MyService.OnGet("Luis Fer");
+
+        gitHubBranches = await MyService.OnGet("Luis Fer");
+    }
+
+
+
+    //protected override async Task OnInitialized()
+    //{
+    //    var name = "Luis";
+    //    var result = MyService.OnGet("Pepe Fer");
+
+    //}
+
+    //private async Task PrintWebApiResponse()
+    //{
+    //    var name = "Luis";
+    //    var response = await Http.GetStringAsync($"https://localhost:44308/api/QR/Grittings/{name}");
+    //    Console.WriteLine(response);
+    //}
+}
