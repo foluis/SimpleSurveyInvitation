@@ -99,5 +99,36 @@ namespace NA.SimpleSurveyInvitation.Web.Data
 
             return byteArray;
         }
+
+        public async Task<byte[]> QRProcessint(string qrText)
+        {
+            if (String.IsNullOrEmpty(qrText))
+            {
+                qrText = "Empty string";
+            }
+
+            byte[] byteArray = { };
+
+            //var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/Generate/{qrText}/");
+            //var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/GenerateURL/{qrText}/");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://testqrgeneratorapi.azurewebsites.net/api/QR/GenerateURL/{qrText}/");
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                return await JsonSerializer.DeserializeAsync<byte[]>(responseStream);
+            }
+            else
+            {
+                GetBranchesError = true;
+                Branches = Array.Empty<GitHubBranch>();
+            }
+
+            return byteArray;
+        }
     }
 }
