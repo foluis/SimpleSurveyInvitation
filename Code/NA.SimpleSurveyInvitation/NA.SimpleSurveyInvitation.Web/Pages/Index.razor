@@ -1,5 +1,27 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using NA.SimpleSurveyInvitation.Web.Data
 
-Welcome to your new app.
+@inject ExampleService QRService
+
+@if (processingQR)
+{
+    <div class="spinner"></div>
+}
+else if (byteArray.Length != 0)
+{
+    <p>
+        <img class="imageThumbnail" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(@byteArray))" />
+    </p>
+}
+
+@code {
+    bool processingQR = false;
+    byte[] byteArray = { };
+    string valueToConvert = "simplesurveyinvitation.azurewebsites.net/Survey";
+
+    protected override async Task OnInitializedAsync()
+    {
+        byteArray = await QRService.QRImage2(valueToConvert);
+    }
+}

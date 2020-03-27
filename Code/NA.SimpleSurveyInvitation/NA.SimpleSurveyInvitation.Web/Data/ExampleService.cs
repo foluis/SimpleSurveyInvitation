@@ -10,7 +10,8 @@ namespace NA.SimpleSurveyInvitation.Web.Data
 {
     public class ExampleService
     {
-        private readonly IHttpClientFactory _clientFactory;        
+        private readonly IHttpClientFactory _clientFactory;
+        private static readonly HttpClient client2 = new HttpClient();
 
         public IEnumerable<GitHubBranch> Branches { get; private set; }
 
@@ -71,7 +72,7 @@ namespace NA.SimpleSurveyInvitation.Web.Data
 
         public async Task<byte[]> QRImage(string qrText)
         {
-            if(String.IsNullOrEmpty(qrText))
+            if (String.IsNullOrEmpty(qrText))
             {
                 qrText = "Empty string";
             }
@@ -98,6 +99,21 @@ namespace NA.SimpleSurveyInvitation.Web.Data
             }
 
             return byteArray;
+        }
+
+        public async Task<byte[]> QRImage2(string qrText)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "value", qrText }
+            };
+
+            var content = new FormUrlEncodedContent(values);
+
+            var response = await client2.PostAsync("https://localhost:44308/api/QR/GetQRByteArray", content);
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<byte[]>(responseStream);
         }
 
         public async Task<byte[]> QRProcessint(string qrText)

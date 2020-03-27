@@ -1,4 +1,5 @@
-﻿using QRCoder;
+﻿using NA.SimpleSurveyInvitation._472API.Models;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,7 +25,7 @@ namespace NA.SimpleSurveyInvitation._472API.Controllers
             QRCode qrCode = new QRCode(qrCodeData);
             //Bitmap qrCodeImage = qrCode.GetGraphic(20);
             Bitmap qrCodeImage = qrCode.GetGraphic(20, Color.DarkRed, Color.PaleGreen, true);
-            return BitmapToBytes(qrCodeImage);    
+            return BitmapToBytes(qrCodeImage);
         }
 
         [Route("api/QR/GenerateURL/{Value}")]
@@ -32,19 +33,31 @@ namespace NA.SimpleSurveyInvitation._472API.Controllers
         // GET: https://localhost:44308/api/QR/GenerateURL/value
         public byte[] GetUrl(string value)
         {
-            Url generator = new Url(value);            
+            Url generator = new Url(value);
             string payload = generator.ToString();
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
-
-            //Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20, Color.DarkRed, Color.PaleGreen, true);
+            
             return BitmapToBytes(qrCodeAsBitmap);
         }
 
-            private static Byte[] BitmapToBytes(Bitmap img)
+        [Route("api/QR/GetQRByteArray")]
+        [HttpPost]
+        // POST: https://localhost:44308/api/QR/GetQRByteArray
+        public byte[] GetQRByteArray([FromBody] DataToConvert dataToConvert)
+        {           
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(dataToConvert.Value, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
+           
+            return BitmapToBytes(qrCodeAsBitmap);
+        }
+
+        private static Byte[] BitmapToBytes(Bitmap img)
         {
             using (MemoryStream stream = new MemoryStream())
             {
