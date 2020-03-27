@@ -1,27 +1,11 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
 
-@using NA.SimpleSurveyInvitation.Web.Data
-
-@inject ExampleService QRService
-
-@if (processingQR)
-{
-    <div class="spinner"></div>
-}
-else if (byteArray.Length != 0)
-{
-    <p>
-        <img class="imageThumbnail" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(@byteArray))" />
-    </p>
-}
+<h2>Welcome</h2>
 
 @code {
-    bool processingQR = false;
-    byte[] byteArray = { };
-    string valueToConvert = "simplesurveyinvitation.azurewebsites.net/Survey";
-
     protected override async Task OnInitializedAsync()
     {
-        byteArray = await QRService.QRImage2(valueToConvert);
+        NavigationManager.NavigateTo("/GenericQR/SurveyQR2", true);
     }
 }
