@@ -8,21 +8,18 @@
 
 <div class="form-group">
     <label for="qRtext">Text to generate QR</label>
-    <input type="text" @bind="valueToConvert"  class="form-control" id="qRtext" placeholder="Enter text to work with">
+    <input type="text" @bind="valueToConvert" class="form-control" id="qRtext" placeholder="Enter text to work with">
 </div>
 
 <button class="btn btn-primary" @onclick="GetGenericQR">Generate QR</button>
 
 <br />
 
-@if (byteArray.Length == 0)
+@if (byteArray.Length != 0)
 {
-    @*<p><em>Click button for greattings...</em></p>*@
-}
-else
-{
-    @*<p><em>Saludo:</em>@saludo</p>*@
-    <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(@byteArray))" />
+    <p>
+        <img class="imageThumbnail" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(@byteArray))" />
+    </p>
 }
 
 <br />

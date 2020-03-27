@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using static QRCoder.PayloadGenerator;
 
 namespace NA.SimpleSurveyInvitation._472API.Controllers
 {
@@ -21,49 +22,35 @@ namespace NA.SimpleSurveyInvitation._472API.Controllers
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(value, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
-            Bitmap qrCodeImage = qrCode.GetGraphic(20);
-            return BitmapToBytes(qrCodeImage);
-            //return View(BitmapToBytes(qrCodeImage));
-
-            //return new string[] { "value1", "value2" };
+            //Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20, Color.DarkRed, Color.PaleGreen, true);
+            return BitmapToBytes(qrCodeImage);    
         }
 
-        [Route("api/QR/Grittings/{Value}")]
+        [Route("api/QR/GenerateURL/{Value}")]
         [HttpGet]
-        // GET: https://localhost:44308/api/QR/Grittings/pepe
-        public string Grittings(string value)
+        // GET: https://localhost:44308/api/QR/GenerateURL/value
+        public byte[] GetUrl(string value)
         {
-            return $"Hola {value}";
+            Url generator = new Url(value);            
+            string payload = generator.ToString();
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
+
+            //Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20, Color.DarkRed, Color.PaleGreen, true);
+            return BitmapToBytes(qrCodeAsBitmap);
         }
 
-        private static Byte[] BitmapToBytes(Bitmap img)
+            private static Byte[] BitmapToBytes(Bitmap img)
         {
             using (MemoryStream stream = new MemoryStream())
             {
                 img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                 return stream.ToArray();
             }
-        }
-
-        // GET: api/QR/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/QR
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/QR/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/QR/5
-        public void Delete(int id)
-        {
         }
     }
 }

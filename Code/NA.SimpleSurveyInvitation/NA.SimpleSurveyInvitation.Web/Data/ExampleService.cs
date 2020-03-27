@@ -71,9 +71,15 @@ namespace NA.SimpleSurveyInvitation.Web.Data
 
         public async Task<byte[]> QRImage(string qrText)
         {
+            if(String.IsNullOrEmpty(qrText))
+            {
+                qrText = "Empty string";
+            }
+
             byte[] byteArray = { };
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/Generate/{qrText}");
+            //var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/Generate/{qrText}/");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/GenerateURL/{qrText}/");
 
             var client = _clientFactory.CreateClient();
 

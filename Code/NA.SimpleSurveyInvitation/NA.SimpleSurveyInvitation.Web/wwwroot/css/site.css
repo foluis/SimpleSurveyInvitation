@@ -181,3 +181,7 @@ app {
         display: block;
     }
 }
+.imageThumbnail{
+    height:300px;
+    width:auto;
+}
