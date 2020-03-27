@@ -6,9 +6,10 @@ namespace NA.SimpleSurveyInvitation.Web.Pages
 {
     public partial class GenericQR
     {      
-        private List<GitHubBranch> gitHubBranches;
-        private string valueToConvert = string.Empty;
+        List<GitHubBranch> gitHubBranches;
+        string valueToConvert = string.Empty;
         byte[] byteArray = { };
+        bool processingQR = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -16,8 +17,10 @@ namespace NA.SimpleSurveyInvitation.Web.Pages
         }
 
         private async Task GetGenericQR()
-        {            
+        {
+            processingQR = true;
             byteArray = await MyService.QRImage(valueToConvert);
+            processingQR = false;
         }
     }
 }
