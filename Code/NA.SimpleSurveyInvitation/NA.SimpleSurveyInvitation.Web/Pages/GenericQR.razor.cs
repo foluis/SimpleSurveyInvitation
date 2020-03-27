@@ -13,7 +13,7 @@ namespace NA.SimpleSurveyInvitation.Web.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            gitHubBranches = await MyService.OnGet("Luis Fer");
+            //gitHubBranches = await MyService.OnGet("Luis Fer");
         }
 
         private async Task GetGenericQR()
