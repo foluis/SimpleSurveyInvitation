@@ -79,7 +79,8 @@ namespace NA.SimpleSurveyInvitation.Web.Data
             byte[] byteArray = { };
 
             //var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/Generate/{qrText}/");
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/GenerateURL/{qrText}/");
+            //var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:44308/api/QR/GenerateURL/{qrText}/");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://testqrgeneratorapi.azurewebsites.net/api/QR/GenerateURL/{qrText}/");
 
             var client = _clientFactory.CreateClient();
 
