@@ -3,6 +3,13 @@
 
 <h3>Survey</h3>
 
+<div class="alert alert-warning alert-dismissible fade @alertStatus" role="alert">
+    <strong>Congrats!</strong> You have sent your answers.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick="HideAlerts">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <div>
     <div class="form-group">
         <label class="control-label " for="region_id">Select a year?</label>
@@ -33,25 +40,32 @@
 @code {
     private int SelectedYear { get; set; } = 2015;
     string selectedAnswer = "";
+    string alertStatus = "hide";
 
     void ChangeYear(ChangeEventArgs e)
     {
         SelectedYear = Convert.ToInt32(e.Value.ToString());
     }
 
+    public void HideAlerts()
+    {        
+        alertStatus = "hide";
+    }
+
     public void SendData()
     {
         SelectedYear = 2015;
         selectedAnswer = "";
+        alertStatus = "show";
     }
 
     void SelectionChanged(ChangeEventArgs args)
     {
         selectedAnswer = args.Value.ToString();
-    }  
+    }
 
     public class Question
-    {      
+    {
         public enum Colors { Red, Green, Blue, Yellow };
     }
 }
