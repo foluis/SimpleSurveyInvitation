@@ -5,16 +5,7 @@
 
 <div>
     <div class="form-group">
-        <!-- Message input !-->
         <label class="control-label " for="region_id">Select a year?</label>
-        @*<select class="form-control" id="region_id" name="region">
-                <option value="0">Select option</option>
-                <option value="North">North</option>
-                <option value="West">West</option>
-                <option value="East">East</option>
-                <option value="South">South</option>
-            </select>*@
-
         <select class="form-control" id="region_id" name="region" value="@SelectedYear" @onchange="ChangeYear">
             @for (int i = 2015; i < DateTime.Now.Year + 1; i++)
             {
@@ -22,131 +13,45 @@
             }
         </select>
     </div>
-    @*<div class="form-group">
-         Radio group !
-        <label class="control-label">What is your favorite food?</label>
-        <div class="radio">
-            <label>
-                <input type="radio" name="fav_foods" value="pizza">
-                Pizza
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="fav_foods" value="hamburger">
-                Hamburgers
-            </label>
-        </div>
-    </div>*@
-
-    @*<div class="form-group">
-            <label class="control-label">What is your favorite food?</label>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="edition" checked="@(EditionCode == 1)" onchange="RadioSelected(1)" /> Pizza
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="edition" checked="@(EditionCode == 2)" onchange="RadioSelected(2)" /> Hamburger
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="edition" checked="@(EditionCode == 3)" onchange="RadioSelected(3)" /> Cauliflower
-                </label>
-            </div>
-        </div>*@
-
-    @*<div>
-            @foreach (var item in new string[] { "AspNetCore", "AspNet", "SomeJsThingWhatever" })
-            {
-                <div>
-                    <input type="radio" name="technology" id="@item" value="@item" @onchange="RadioSelection" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
-                    <label for="@item">@item</label>
-                </div>
-            }
-            <div>
-                <label>Selected Value is @RadioValue</label>
-            </div>
-        </div>*@
-
-    <div>
-        <div class="form-group">
-            <label class="control-label">What is your favorite color?</label>
-            @foreach (var item in Enum.GetNames(typeof(Question.Colors)))
-            {
-                <div>
-                    <input type="radio" name="question1" id="@item" value="@item" @onchange="SelectionChanged" checked=@(selectedAnswer.Equals(item,StringComparison.OrdinalIgnoreCase)) />
-                    <label for="@item">@item</label>
-                </div>
-            }
-        </div>      
-    </div>
 
     <div class="form-group">
-        <!-- Submit button !-->
-        @*<button class="btn btn-primary" onclick="GoHome" name="submit" type="submit">Submit</button>*@
-        <button class="btn btn-primary" @onclick="GoHome">Submit</button>
+        <label class="control-label">What is your favorite color?</label>
+        @foreach (var item in Enum.GetNames(typeof(Question.Colors)))
+        {
+            <div>
+                <input type="radio" name="question1" id="@item" value="@item" @onchange="SelectionChanged" checked=@(selectedAnswer.Equals(item,StringComparison.OrdinalIgnoreCase)) />
+                <label for="@item">@item</label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">       
+        <button class="btn btn-primary" @onclick="SendData">Submit</button>
     </div>
 </div>
 
 @code {
     private int SelectedYear { get; set; } = 2015;
-    int EditionCode = 1;
+    string selectedAnswer = "";
 
     void ChangeYear(ChangeEventArgs e)
     {
         SelectedYear = Convert.ToInt32(e.Value.ToString());
     }
 
-    void RadioSelected(int value)
-    {
-        EditionCode = value;
-    }
-
-    string RadioValue = "aspnetcore";
-    void RadioSelection()
-    {
-        //RadioValue = args.Value.ToString();
-    }
-
-    public void GoHome()
+    public void SendData()
     {
         SelectedYear = 2015;
-        //EditionCode = 1;
-        RadioSelected(1);
         selectedAnswer = "";
-
     }
 
-
-
-
-
-    string selectedAnswer = "";
     void SelectionChanged(ChangeEventArgs args)
     {
         selectedAnswer = args.Value.ToString();
-    }
-
-
-    Question question = new Question { QuestionText = "What is the color of the sky" };
-
-
-    public void OnSubmit()
-    {
-
-        Console.WriteLine(selectedAnswer);
-
-    }
+    }  
 
     public class Question
-    {
-
-        public string QuestionText { get; set; }
+    {      
         public enum Colors { Red, Green, Blue, Yellow };
-
     }
-
 }
