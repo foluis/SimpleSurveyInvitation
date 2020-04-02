@@ -110,7 +110,8 @@ namespace NA.SimpleSurveyInvitation.Web.Data
 
             var content = new FormUrlEncodedContent(values);
 
-            var response = await client2.PostAsync("https://localhost:44308/api/QR/GetQRByteArray", content);
+            //var response = await client2.PostAsync("https://localhost:44308/api/QR/GetQRByteArray", content);
+            var response = await client2.PostAsync("https://testqrgeneratorapi.azurewebsites.net/api/QR/GetQRByteArray", content);
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
             return await JsonSerializer.DeserializeAsync<byte[]>(responseStream);
